@@ -3,6 +3,7 @@
 namespace Spatie\Backup\Commands;
 
 use Spatie\Backup\Helpers\ConsoleOutput;
+use Spatie\Backup\Helpers\OperatingSystem;
 use Spatie\SignalAwareCommand\SignalAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,7 +14,7 @@ abstract class BaseCommand extends SignalAwareCommand
 
     public function __construct()
     {
-        if (PHP_OS_FAMILY !== 'Windows') {
+        if (OperatingSystem::supportsSigInt()) {
             $this->handlesSignals[] = SIGINT;
         }
 
