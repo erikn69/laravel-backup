@@ -171,14 +171,14 @@ abstract class TestCase extends Orchestra
         return $fullPath;
     }
 
-    public function getStubDbDirectory(): string
+    public function getStubDbDirectory(?string $file = null): string
     {
-        return __DIR__.'/stubs-db';
+        return __DIR__.'/stubs-db'.($file ? '/'.$file : '');
     }
 
-    public function getTempDirectory(): string
+    public function getTempDirectory(?string $file = null): string
     {
-        return __DIR__.'/temp';
+        return __DIR__.'/temp'.($file ? '/'.$file : '');
     }
 
     public function initializeTempDirectory()
