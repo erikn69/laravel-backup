@@ -65,7 +65,7 @@ class BackupCommand extends BaseCommand
 
             return 1;
         }
-        
+
         try {
             $backupJob->run();
 
