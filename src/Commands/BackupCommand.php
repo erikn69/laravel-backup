@@ -55,7 +55,13 @@ class BackupCommand extends BaseCommand
                 $backupJob->disableSignals();
             }
 
-            $backupJob->run();
+            try {
+                $backupJob->run();
+            } catch (Exception $exception) {
+                $disableNotifications = true;
+
+                throw $exception;
+            }
 
             consoleOutput()->comment('Backup completed!');
         } catch (Exception $exception) {
