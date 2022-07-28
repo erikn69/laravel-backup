@@ -54,10 +54,6 @@ class BackupCommand extends BaseCommand
             if (! $this->getSubscribedSignals()) {
                 $backupJob->disableSignals();
             }
-
-            $backupJob->run();
-
-            consoleOutput()->comment('Backup completed!');
         } catch (Exception $exception) {
             consoleOutput()->error("Backup failed because: {$exception->getMessage()}.");
 
@@ -66,6 +62,16 @@ class BackupCommand extends BaseCommand
             if (! $disableNotifications) {
                 event(new BackupHasFailed($exception));
             }
+
+            return 1;
+        }
+        
+        try {
+            $backupJob->run();
+
+            consoleOutput()->comment('Backup completed!');
+        } catch (Exception $exception) {
+            report($exception);
 
             return 1;
         }
