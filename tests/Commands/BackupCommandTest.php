@@ -109,6 +109,29 @@ it('can backup using relative path', function () {
     expect($zipFiles)->toBe($testFiles);
 });
 
+it('can backup using short relative path', function () {
+    config()->set('backup.backup.source.files.include', [$this->getStubDirectory('.dot')]);
+    config()->set('backup.backup.source.files.relative_path', $this->getStubDirectory());
+
+    $testFiles = [
+        '.dot'
+    ];
+
+    $this->artisan('backup:run --only-files')->assertExitCode(0);
+
+    $zipFiles = [];
+    $zip = new ZipArchive();
+    $zip->open(Storage::disk('local')->path($this->expectedZipPath));
+    foreach (range(0, $zip->numFiles - 1) as $i) {
+        $zipFiles[] = $zip->statIndex($i)['name'];
+    }
+    $zip->close();
+    sort($testFiles);
+    sort($zipFiles);
+
+    expect($zipFiles)->toBe($testFiles);
+});
+
 it('excludes the temporary directory from the backup', function () {
     $tempDirectoryPath = storage_path('app/backup-temp/temp');
 
