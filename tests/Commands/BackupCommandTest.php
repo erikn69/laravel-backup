@@ -114,7 +114,7 @@ it('can backup using short relative path', function () {
     config()->set('backup.backup.source.files.relative_path', $this->getStubDirectory());
 
     $testFiles = [
-        '.dot'
+        '.dot',
     ];
 
     $this->artisan('backup:run --only-files')->assertExitCode(0);
